@@ -1,27 +1,33 @@
 pipeline {
     agent any
-    
-    environment {
-        EMAIL_RECIPIENT = 'work.ujjwalds@gmail.com'
-    }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
                 script {
-                    echo 'Building the code using Maven...'
-                    // Tool: Maven
-                    bat 'mvn clean package'
+                    echo 'Cloning the Git repository...'
+                    git 'https://github.com/ujjucodes/Pipeline_6.1.git'
                 }
             }
         }
 
-        stage('Unit and Integration Tests') {
+        stage('Build') {
             steps {
                 script {
-                    echo 'Running unit and integration tests...'
-                    // Tool: JUnit or TestNG
-                    bat 'mvn test'
+                    echo 'Building the code...'
+                    // Assuming your project has a Makefile or a build script, run the appropriate build command
+                    bat 'gcc -o myProgram src/*.c'  // Example for compiling C code (adjust as needed)
+                    // If using Java without Maven, you can compile with javac: bat 'javac -d bin src/**/*.java'
+                }
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                script {
+                    echo 'Running unit tests...'
+                    // Add your custom testing script or tool command here
+                    bat 'run_my_tests.bat'  // Replace with your actual test execution command
                 }
             }
         }
@@ -29,19 +35,9 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    echo 'Analyzing code with SonarQube...'
-                    // Tool: SonarQube
-                    bat 'mvn sonar:sonar'
-                }
-            }
-        }
-
-        stage('Security Scan') {
-            steps {
-                script {
-                    echo 'Performing security scan with OWASP ZAP...'
-                    // Tool: OWASP ZAP
-                    bat 'zap.sh -cmd -quickurl http://your-app-url -quickout zap_report.html'
+                    echo 'Performing code analysis...'
+                    // Add any code analysis tool you are using (SonarQube, Lint, etc.)
+                    bat 'run_code_analysis.bat'  // Replace with your actual code analysis command
                 }
             }
         }
@@ -49,9 +45,9 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Deploying application to staging server...'
-                    // Tool: AWS CLI or Ansible
-                    bat 'aws s3 cp target/your-app.jar s3://your-staging-bucket/'
+                    echo 'Deploying to Staging...'
+                    // Add your staging deployment script here
+                    bat 'deploy_to_staging.bat'  // Replace with your deployment script or commands
                 }
             }
         }
@@ -59,9 +55,9 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    echo 'Running integration tests on staging...'
-                    // Tool: Postman or Selenium
-                    bat 'newman run collection.json'
+                    echo 'Running integration tests on Staging...'
+                    // Add your integration testing script here
+                    bat 'run_integration_tests.bat'  // Replace with the actual test command
                 }
             }
         }
@@ -69,9 +65,9 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script {
-                    echo 'Deploying application to production server...'
-                    // Tool: AWS CLI or Ansible
-                    bat 'aws s3 cp target/your-app.jar s3://your-production-bucket/'
+                    echo 'Deploying to Production...'
+                    // Add your production deployment script here
+                    bat 'deploy_to_production.bat'  // Replace with the actual deployment script or commands
                 }
             }
         }
@@ -79,22 +75,11 @@ pipeline {
 
     post {
         success {
-            script {
-                echo 'Pipeline completed successfully.'
-            }
-            // Send email on success
-            mail to: 'work.ujjwalds@gmail.com',
-                 subject: "Build Successful: ${currentBuild.fullDisplayName}",
-                 body: "The build was successful. Check the console output at ${env.BUILD_URL}."
+            echo 'Pipeline completed successfully.'
         }
         failure {
-            script {
-                echo 'Pipeline failed.'
-            }
-            // Send email on failure
-            mail to: 'work.ujjwalds@gmail.com',
-                 subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                 body: "The build failed. Check the console output at ${env.BUILD_URL}."
+            echo 'Pipeline failed.'
+            // Optionally, add email or other notification methods
         }
     }
 }
