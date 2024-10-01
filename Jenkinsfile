@@ -11,7 +11,7 @@ pipeline {
                 script {
                     echo 'Building the code using Maven...'
                     // Tool: Maven
-                    sh 'mvn clean package'
+                    bat 'mvn clean package'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
                 script {
                     echo 'Running unit and integration tests...'
                     // Tool: JUnit or TestNG
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
                 script {
                     echo 'Analyzing code with SonarQube...'
                     // Tool: SonarQube
-                    sh 'mvn sonar:sonar'
+                    bat 'mvn sonar:sonar'
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
                 script {
                     echo 'Performing security scan with OWASP ZAP...'
                     // Tool: OWASP ZAP
-                    sh 'zap.sh -cmd -quickurl http://your-app-url -quickout zap_report.html'
+                    bat 'zap.sh -cmd -quickurl http://your-app-url -quickout zap_report.html'
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
                 script {
                     echo 'Deploying application to staging server...'
                     // Tool: AWS CLI or Ansible
-                    sh 'aws s3 cp target/your-app.jar s3://your-staging-bucket/'
+                    bat 'aws s3 cp target/your-app.jar s3://your-staging-bucket/'
                 }
             }
         }
@@ -61,7 +61,7 @@ pipeline {
                 script {
                     echo 'Running integration tests on staging...'
                     // Tool: Postman or Selenium
-                    sh 'newman run collection.json'
+                    bat 'newman run collection.json'
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
                 script {
                     echo 'Deploying application to production server...'
                     // Tool: AWS CLI or Ansible
-                    sh 'aws s3 cp target/your-app.jar s3://your-production-bucket/'
+                    bat 'aws s3 cp target/your-app.jar s3://your-production-bucket/'
                 }
             }
         }
