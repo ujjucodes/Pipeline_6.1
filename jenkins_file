@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        EMAIL_RECIPIENT = 'your_email@example.com'
+        EMAIL_RECIPIENT = 'work.ujjwalds@gmail.com'
     }
 
     stages {
@@ -83,7 +83,7 @@ pipeline {
                 echo 'Pipeline completed successfully.'
             }
             // Send email on success
-            mail to: "${EMAIL_RECIPIENT}",
+            mail to: "${work.ujjwalds@gmail.com}",
                  subject: "Build Successful: ${currentBuild.fullDisplayName}",
                  body: "The build was successful. Check the console output at ${env.BUILD_URL}."
         }
@@ -92,7 +92,7 @@ pipeline {
                 echo 'Pipeline failed.'
             }
             // Send email on failure
-            mail to: "${EMAIL_RECIPIENT}",
+            mail to: "${work.ujjwalds@gmail.com}",
                  subject: "Build Failed: ${currentBuild.fullDisplayName}",
                  body: "The build failed. Check the console output at ${env.BUILD_URL}."
         }
