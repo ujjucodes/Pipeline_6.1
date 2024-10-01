@@ -92,7 +92,7 @@ pipeline {
                 echo 'Pipeline failed.'
             }
             // Send email on failure
-            mail to: "${work.ujjwalds@gmail.com}",
+            mail to: 'work.ujjwalds@gmail.com',
                  subject: "Build Failed: ${currentBuild.fullDisplayName}",
                  body: "The build failed. Check the console output at ${env.BUILD_URL}."
         }
