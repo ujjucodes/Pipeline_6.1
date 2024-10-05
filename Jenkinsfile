@@ -8,8 +8,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    echo 'Cloning the Git repository...' | tee -a LOG_FILE
-                    git 'https://github.com/ujjucodes/Pipeline_6.1.git' | tee -a LOG_FILE
+                    echo 'Cloning the Git repository...' 
+                    bat "echo 'Cloning the Git repository...' >> ${LOG_FILE}"
+                    git 'https://github.com/ujjucodes/Pipeline_6.1.git' 
                 }
             }
         }
@@ -17,8 +18,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo 'Building the code...' | tee -a LOG_FILE
-                    bat 'gcc -o myProgram src/*.c' | tee -a LOG_FILE  // Adjust based on your build
+                    echo 'Building the code...'
+                    bat "echo 'Building the code...' >> ${LOG_FILE}"
+                    bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}'  // Adjust based on your build
                 }
             }
         }
@@ -26,8 +28,9 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
-                    echo 'Running unit tests...' | tee -a LOG_FILE
-                    bat 'run_my_tests.bat' | tee -a LOG_FILE  // Adjust based on your testing command
+                    echo 'Running unit tests...'
+                    bat "echo 'Running unit tests...' >> ${LOG_FILE}"
+                    bat 'run_my_tests.bat >> ${LOG_FILE}'  // Adjust based on your testing command
                 }
             }
         }
@@ -35,8 +38,9 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    echo 'Performing code analysis...' | tee -a LOG_FILE
-                    bat 'run_code_analysis.bat' | tee -a LOG_FILE  // Adjust based on your analysis tool
+                    echo 'Performing code analysis...'
+                    bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
+                    bat 'run_code_analysis.bat >> ${LOG_FILE}'  // Adjust based on your analysis tool
                 }
             }
         }
@@ -44,8 +48,9 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Deploying to Staging...' | tee -a LOG_FILE
-                    bat 'deploy_to_staging.bat' | tee -a LOG_FILE  // Adjust based on your staging deployment
+                    echo 'Deploying to Staging...'
+                    bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
+                    bat 'deploy_to_staging.bat >> ${LOG_FILE}'  // Adjust based on your staging deployment
                 }
             }
         }
@@ -53,8 +58,9 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    echo 'Running integration tests on Staging...' | tee -a LOG_FILE
-                    bat 'run_integration_tests.bat' | tee -a LOG_FILE  // Adjust based on your integration tests
+                    echo 'Running integration tests on Staging...'
+                    bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
+                    bat 'run_integration_tests.bat >> ${LOG_FILE}'  // Adjust based on your integration tests
                 }
             }
         }
@@ -62,8 +68,9 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script {
-                    echo 'Deploying to Production...' | tee -a LOG_FILE
-                    bat 'deploy_to_production.bat' | tee -a LOG_FILE  // Adjust based on your production deployment
+                    echo 'Deploying to Production...'
+                    bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
+                    bat 'deploy_to_production.bat >> ${LOG_FILE}'  // Adjust based on your production deployment
                 }
             }
         }
@@ -71,11 +78,13 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully.' | tee -a LOG_FILE
+            echo 'Pipeline completed successfully.'
+            bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
             sendEmailNotification(LOG_FILE)
         }
         failure {
-            echo 'Pipeline failed.' | tee -a LOG_FILE
+            echo 'Pipeline failed.'
+            bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
             sendEmailNotification(LOG_FILE)
         }
     }
