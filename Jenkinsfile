@@ -88,7 +88,7 @@ pipeline {
             sendEmailNotification(LOG_FILE)
         }
     }
-}
+
 
 // Function to send email notification
 def sendEmailNotification(logFilePath) {
