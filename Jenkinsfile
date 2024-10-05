@@ -10,7 +10,7 @@ pipeline {
                 script {
                     echo 'Building the code...'
                     bat "echo 'Building the code...' >> ${LOG_FILE}"
-                    bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}'  // Adjust based on your build
+                    // bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}'  // Adjust based on your build
                 }
             }
         }
