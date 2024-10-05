@@ -20,7 +20,7 @@ pipeline {
                 script {
                     echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
-                    bat 'run_my_tests.bat >> ${LOG_FILE}'  // Adjust based on your testing command
+                  
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     echo 'Performing code analysis...'
                     bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
-                    bat 'run_code_analysis.bat >> ${LOG_FILE}'  // Adjust based on your analysis tool
+                  
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
                 script {
                     echo 'Running integration tests on Staging...'
                     bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
-                    bat 'run_integration_tests.bat >> ${LOG_FILE}'  // Adjust based on your integration tests
+                  
                 }
             }
         }
@@ -60,7 +60,7 @@ pipeline {
                 script {
                     echo 'Deploying to Production...'
                     bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
-                    bat 'deploy_to_production.bat >> ${LOG_FILE}'  // Adjust based on your production deployment
+                  
                 }
             }
         }
