@@ -40,7 +40,7 @@ pipeline {
                 script {
                     echo 'Deploying to Staging...'
                     bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
-                    bat 'deploy_to_staging.bat >> ${LOG_FILE}'  // Adjust based on your staging deployment
+                  
                 }
             }
         }
