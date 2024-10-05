@@ -4,17 +4,7 @@ pipeline {
         LOG_FILE = "pipeline_log.txt"  // Define the log file name
     }
 
-    // stages {
-    //     stage('Checkout') {
-    //         steps {
-    //             script {
-    //                 echo 'Cloning the Git repository...' 
-    //                 bat "echo 'Cloning the Git repository...' >> ${LOG_FILE}"
-    //                 git 'https://github.com/ujjucodes/Pipeline_6.1.git' 
-    //             }
-    //         }
-    //     }
-
+    stages {  // Ensure the stages block is included
         stage('Build') {
             steps {
                 script {
@@ -88,7 +78,7 @@ pipeline {
             sendEmailNotification(LOG_FILE)
         }
     }
-
+}
 
 // Function to send email notification
 def sendEmailNotification(logFilePath) {
