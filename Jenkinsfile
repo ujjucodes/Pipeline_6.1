@@ -15,10 +15,10 @@ pipeline {
             }
         }
 
-        stage('Unit Tests') {
-            steps {
-                script {
-                    echo 'Running unit tests...'
+      //  stage('Unit Tests') {
+       //     steps {
+           //     script {
+              //      echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
                   
                 }
