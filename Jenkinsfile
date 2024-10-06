@@ -16,11 +16,10 @@ pipeline {
         }
 
         stage('Unit Tests') {
-           steps {
+            steps {
                 script {
                     echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -30,7 +29,6 @@ pipeline {
                 script {
                     echo 'Performing code analysis...'
                     bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -40,7 +38,6 @@ pipeline {
                 script {
                     echo 'Deploying to Staging...'
                     bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -50,7 +47,6 @@ pipeline {
                 script {
                     echo 'Running integration tests on Staging...'
                     bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -60,7 +56,6 @@ pipeline {
                 script {
                     echo 'Deploying to Production...'
                     bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -70,23 +65,23 @@ pipeline {
         success {
             echo 'Pipeline completed successfully.'
             bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
-            sendEmailNotification(LOG_FILE)
+            sendEmailNotification("Pipeline Successful")
         }
         failure {
             echo 'Pipeline failed.'
             bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
-            sendEmailNotification(LOG_FILE)
+            sendEmailNotification("Pipeline Failed")
         }
     }
 }
 
 // Function to send email notification
-def sendEmailNotification(logFilePath) {
+def sendEmailNotification(status) {
     emailext (
-        subject: "Jenkins Pipeline - Execution Result",
-        body: """The pipeline has finished. Please find the attached log file for details.""",
+        subject: "Jenkins Pipeline - ${status}",
+        body: "${status}",
         attachLog: true,
-        attachmentsPattern: logFilePath,
+        attachmentsPattern: LOG_FILE,
         to: "work.ujjwalds@gmail.com"  // Replace with the actual recipient email
     )
 }
