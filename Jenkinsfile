@@ -20,7 +20,6 @@ pipeline {
                 script {
                     echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -30,7 +29,6 @@ pipeline {
                 script {
                     echo 'Performing code analysis...'
                     bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -40,7 +38,6 @@ pipeline {
                 script {
                     echo 'Deploying to Staging...'
                     bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -50,7 +47,6 @@ pipeline {
                 script {
                     echo 'Running integration tests on Staging...'
                     bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -60,7 +56,6 @@ pipeline {
                 script {
                     echo 'Deploying to Production...'
                     bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
-                  
                 }
             }
         }
@@ -68,14 +63,18 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully.'
-            bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
-            sendEmailNotification(LOG_FILE)
+            script {
+                echo 'Pipeline completed successfully.'
+                bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
+                sendEmailNotification(LOG_FILE)
+            }
         }
         failure {
-            echo 'Pipeline failed.'
-            bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
-            sendEmailNotification(LOG_FILE)
+            script {
+                echo 'Pipeline failed.'
+                bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
+                sendEmailNotification(LOG_FILE)
+            }
         }
     }
 }
