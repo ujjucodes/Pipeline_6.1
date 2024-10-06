@@ -11,7 +11,8 @@ pipeline {
                     echo 'Pipeline has been created and started successfully.'
                     emailext (
                         subject: "Jenkins Pipeline Created",
-                        body: "The Jenkins pipeline has been created and started.",
+                        body: "The Jenkins pipeline has been created and started successfully.",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                         to: "work.ujjwalds@gmail.com"
                     )
                 }
@@ -80,8 +81,8 @@ pipeline {
                 bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
                 emailext (
                     subject: "Jenkins Pipeline - Success",
-                    body: "The Jenkins pipeline has completed successfully.",
-                    attachmentsPattern: LOG_FILE,
+                    body: "The Jenkins pipeline has completed successfully. See the attached log file for details.",
+                    attachmentsPattern: "*.txt",  // Ensure log file attachment is properly matched
                     to: "work.ujjwalds@gmail.com"
                 )
             }
@@ -93,7 +94,7 @@ pipeline {
                 emailext (
                     subject: "Jenkins Pipeline - Failure",
                     body: "The Jenkins pipeline has failed. Please check the attached log.",
-                    attachmentsPattern: LOG_FILE,
+                    attachmentsPattern: "*.txt",  // Match log file attachment properly
                     to: "work.ujjwalds@gmail.com"
                 )
             }
