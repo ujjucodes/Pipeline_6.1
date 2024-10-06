@@ -79,7 +79,7 @@ pipeline {
 def sendEmailNotification(status) {
     emailext (
         subject: "Jenkins Pipeline - ${status}",
-        body: "${status}",
+        body: "${status},'Please check the detailed status of failure / success in the log'",
         attachLog: true,
         attachmentsPattern: LOG_FILE,
         to: "work.ujjwalds@gmail.com"  // Replace with the actual recipient email
