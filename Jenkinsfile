@@ -4,14 +4,13 @@ pipeline {
         LOG_FILE = "pipeline_log.txt"  // Define the log file name
     }
 
-    stages {
+    stages {  // Ensure the stages block is included
         stage('Build') {
             steps {
                 script {
                     echo 'Building the code...'
                     bat "echo 'Building the code...' >> ${LOG_FILE}"
-                    // Uncomment and adjust based on your build command
-                    // bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}' 
+                    // bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}'  // Adjust based on your build
                 }
             }
         }
@@ -21,6 +20,7 @@ pipeline {
                 script {
                     echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -30,6 +30,7 @@ pipeline {
                 script {
                     echo 'Performing code analysis...'
                     bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -39,6 +40,7 @@ pipeline {
                 script {
                     echo 'Deploying to Staging...'
                     bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -48,6 +50,7 @@ pipeline {
                 script {
                     echo 'Running integration tests on Staging...'
                     bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -57,6 +60,7 @@ pipeline {
                 script {
                     echo 'Deploying to Production...'
                     bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -64,18 +68,14 @@ pipeline {
 
     post {
         success {
-            script {
-                echo 'Pipeline completed successfully.'
-                bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
-                sendEmailNotification(LOG_FILE)
-            }
+            echo 'Pipeline completed successfully.'
+            bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
+            sendEmailNotification(LOG_FILE)
         }
         failure {
-            script {
-                echo 'Pipeline failed.'
-                bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
-                sendEmailNotification(LOG_FILE)
-            }
+            echo 'Pipeline failed.'
+            bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
+            sendEmailNotification(LOG_FILE)
         }
     }
 }
@@ -90,4 +90,3 @@ def sendEmailNotification(logFilePath) {
         to: "work.ujjwalds@gmail.com"  // Replace with the actual recipient email
     )
 }
-
