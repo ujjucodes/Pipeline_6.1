@@ -4,26 +4,13 @@ pipeline {
         LOG_FILE = "pipeline_log.txt"  // Define the log file name
     }
 
-    stages {  
-        stage('Notify Pipeline Created') {
-            steps {
-                script {
-                    echo 'Pipeline has been created and started successfully.'
-                    emailext (
-                        subject: "Jenkins Pipeline Created",
-                        body: "The Jenkins pipeline has been created and started successfully.",
-                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                        to: "work.ujjwalds@gmail.com"
-                    )
-                }
-            }
-        }
-
+    stages {  // Ensure the stages block is included
         stage('Build') {
             steps {
                 script {
                     echo 'Building the code...'
                     bat "echo 'Building the code...' >> ${LOG_FILE}"
+                    // bat 'gcc -o myProgram src/*.c >> ${LOG_FILE}'  // Adjust based on your build
                 }
             }
         }
@@ -33,6 +20,7 @@ pipeline {
                 script {
                     echo 'Running unit tests...'
                     bat "echo 'Running unit tests...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -42,6 +30,7 @@ pipeline {
                 script {
                     echo 'Performing code analysis...'
                     bat "echo 'Performing code analysis...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -51,6 +40,7 @@ pipeline {
                 script {
                     echo 'Deploying to Staging...'
                     bat "echo 'Deploying to Staging...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -60,6 +50,7 @@ pipeline {
                 script {
                     echo 'Running integration tests on Staging...'
                     bat "echo 'Running integration tests on Staging...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -69,6 +60,7 @@ pipeline {
                 script {
                     echo 'Deploying to Production...'
                     bat "echo 'Deploying to Production...' >> ${LOG_FILE}"
+                  
                 }
             }
         }
@@ -76,28 +68,25 @@ pipeline {
 
     post {
         success {
-            script {
-                echo 'Pipeline completed successfully.'
-                bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
-                emailext (
-                    subject: "Jenkins Pipeline - Success",
-                    body: "The Jenkins pipeline has completed successfully. See the attached log file for details.",
-                    attachmentsPattern: "*.txt",  // Ensure log file attachment is properly matched
-                    to: "work.ujjwalds@gmail.com"
-                )
-            }
+            echo 'Pipeline completed successfully.'
+            bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
+            sendEmailNotification(LOG_FILE)
         }
         failure {
-            script {
-                echo 'Pipeline failed.'
-                bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
-                emailext (
-                    subject: "Jenkins Pipeline - Failure",
-                    body: "The Jenkins pipeline has failed. Please check the attached log.",
-                    attachmentsPattern: "*.txt",  // Match log file attachment properly
-                    to: "work.ujjwalds@gmail.com"
-                )
-            }
+            echo 'Pipeline failed.'
+            bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
+            sendEmailNotification(LOG_FILE)
         }
     }
+}
+
+// Function to send email notification
+def sendEmailNotification(logFilePath) {
+    emailext (
+        subject: "Jenkins Pipeline - Execution Result",
+        body: """The pipeline has finished. Please find the attached log file for details.""",
+        attachLog: true,
+        attachmentsPattern: logFilePath,
+        to: "work.ujjwalds@gmail.com"  // Replace with the actual recipient email
+    )
 }
