@@ -4,14 +4,14 @@ pipeline {
         LOG_FILE = "pipeline_log.txt"  // Define the log file name
     }
 
-    stages {
+    stages {  
         stage('Notify Pipeline Created') {
             steps {
                 script {
                     echo 'Pipeline has been created and started successfully.'
-                    emailext(
-                        subject: "Jenkins Pipeline - Pipeline Created",
-                        body: "The Jenkins pipeline has been created and started successfully.",
+                    emailext (
+                        subject: "Jenkins Pipeline Created",
+                        body: "The Jenkins pipeline has been created and started.",
                         to: "work.ujjwalds@gmail.com"
                     )
                 }
@@ -21,8 +21,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo 'Skipping build step as no GCC commands are needed.'
-                    bat "echo 'Skipping build step...' >> ${LOG_FILE}"
+                    echo 'Building the code...'
+                    bat "echo 'Building the code...' >> ${LOG_FILE}"
                 }
             }
         }
@@ -75,22 +75,28 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully.'
-            bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
-            emailext(
-                subject: "Jenkins Pipeline - Execution Successful",
-                body: "The Jenkins pipeline has completed successfully.",
-                to: "work.ujjwalds@gmail.com"
-            )
+            script {
+                echo 'Pipeline completed successfully.'
+                bat "echo 'Pipeline completed successfully.' >> ${LOG_FILE}"
+                emailext (
+                    subject: "Jenkins Pipeline - Success",
+                    body: "The Jenkins pipeline has completed successfully.",
+                    attachmentsPattern: LOG_FILE,
+                    to: "work.ujjwalds@gmail.com"
+                )
+            }
         }
         failure {
-            echo 'Pipeline failed.'
-            bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
-            emailext(
-                subject: "Jenkins Pipeline - Execution Failed",
-                body: "The Jenkins pipeline has failed. Please check the logs for more details.",
-                to: "work.ujjwalds@gmail.com"
-            )
+            script {
+                echo 'Pipeline failed.'
+                bat "echo 'Pipeline failed.' >> ${LOG_FILE}"
+                emailext (
+                    subject: "Jenkins Pipeline - Failure",
+                    body: "The Jenkins pipeline has failed. Please check the attached log.",
+                    attachmentsPattern: LOG_FILE,
+                    to: "work.ujjwalds@gmail.com"
+                )
+            }
         }
     }
 }
